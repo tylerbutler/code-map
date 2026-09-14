@@ -45,6 +45,15 @@ export async function main(argv, { cwd = process.cwd(), stdout = process.stdout,
   }
 }
 
-if (process.argv[1] && await realpath(process.argv[1]) === fileURLToPath(import.meta.url)) {
+async function isMain() {
+  try {
+    return await realpath(process.argv[1]) === fileURLToPath(import.meta.url);
+  } catch (error) {
+    if (error.code === "ENOENT") return false;
+    throw error;
+  }
+}
+
+if (process.argv[1] && await isMain()) {
   process.exitCode = await main(process.argv.slice(2));
 }

@@ -20,6 +20,40 @@ pnpm run build
 pnpm test
 ```
 
+To build a single-file executable, install Bun and run:
+
+```sh
+pnpm run build:exe
+```
+
+The executable is `dist/code-map`. It includes the Bun runtime, JavaScript
+dependencies, and compiled Gleam core, so the destination machine needs only
+Git. It does not need Gleam, Bun, Node, or the code-map source tree.
+
+## Releases
+
+The **Release executables** GitHub Actions workflow publishes a release when
+manually dispatched with a new tag such as `v0.1.0`. It runs the test suite and
+immediately publishes these assets:
+
+- `code-map-darwin-arm64`
+- `code-map-darwin-x64`
+- `code-map-linux-arm64`
+- `code-map-linux-x64`
+- `code-map-windows-x64.exe`
+- `SHA256SUMS`
+
+Each release asset has a GitHub build-provenance attestation. Verify a downloaded
+binary with the repository name that published it:
+
+```sh
+grep ' code-map-linux-x64$' SHA256SUMS | sha256sum --check -
+gh attestation verify code-map-linux-x64 --repo OWNER/REPOSITORY
+```
+
+The executables do not require Gleam, Bun, or Node. They still invoke the system
+`git` command.
+
 The built CLI requires Node and Git. Keep `cli.mjs`, `lib/`, `src/`, the package
 manifests and lockfiles, `node_modules/`, and `build/dev/javascript/` together.
 The compiled Gleam dependency tree is part of the tool, not the target project.

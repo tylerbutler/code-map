@@ -9,6 +9,7 @@
   "exports": "./lib/index.mjs",
   "scripts": {
     "build": "gleam build",
+    "build:exe": "gleam build && bun scripts/build-executable.mjs",
     "test:node": "gleam build && node --test test/*.test.mjs",
     "test": "gleam test && node --test test/*.test.mjs"
   },
