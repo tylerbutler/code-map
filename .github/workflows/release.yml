@@ -73,7 +73,12 @@ jobs:
           bun scripts/build-executable.mjs --target bun-windows-x64 --outfile dist/code-map-windows-x64.exe
 
       - name: Smoke-test Linux executable
-        run: dist/code-map-linux-x64 --help
+        run: |
+          repo="$(mktemp -d)"
+          git -C "$repo" init --quiet
+          printf '%s\n' '---' 'function hello() {}' '---' '<p>Hello</p>' > "$repo/hello.astro"
+          dist/code-map-linux-x64 --root "$repo" find hello --json |
+            grep -q '"total":1'
 
       - name: Generate checksums
         run: cd dist && sha256sum code-map-* > SHA256SUMS
