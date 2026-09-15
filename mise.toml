@@ -1,0 +1,6 @@
+[tools]
+hyperfine = "1.20.0"
+
+[tasks.benchmark]
+description = "Benchmark Copilot with and without code-map"
+run = "node scripts/benchmark-code-map.mjs"

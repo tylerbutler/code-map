@@ -20,6 +20,25 @@ pnpm run build
 pnpm test
 ```
 
+## Agent benchmark
+
+Install the benchmark dependency and compare the same read-only Copilot task
+with and without code-map:
+
+```sh
+mise install
+mise run benchmark -- \
+  --root /path/to/repository \
+  --prompt /path/to/prompt.txt \
+  --runs 5 \
+  --cache warm
+```
+
+Use `--cache cold` to include index creation in each code-map run. Results go
+to `.tmp/code-map-benchmark/`: Hyperfine writes timing JSON, and each Copilot
+run writes usage JSON and JSONL events. Review the answers for correctness
+before comparing timing or token use.
+
 To build a single-file executable, install Bun and run:
 
 ```sh
